@@ -6,12 +6,9 @@ b $5b00 Printer
 s $5b30 Stack Area
 @ $5b30 label=StackArea
 b $5c00 System variables
-b $5cc0 Reserved
-b $5ccb Main Memory
-@ $5ccb label=MainMemory
-t $5CF9
-b $5CFC
-t $5E30
+s $5C50 Decompressed level buffer. Size still unknown.
+@ $5C50 label=DecompressedLevelBuffer
+b $5E30
 b $5E33
 t $5E8B
 b $5E9B
@@ -22,60 +19,24 @@ t $5EFC
 N $5F00 The actual charset begins 32*8 bytes further ahead, ASCII 0-31 are not renderable
 b $5F02
 b $6000 Actual character set graphics, 8 bytes per char
-b $61D8
-t $6233
-b $6236
-t $62EB
-b $62EE
-t $638E
-b $6391
-t $6406
-b $6409
-t $648B
-b $648E
-t $658E
-b $6597
-t $65AA
-b $65AF
-t $65E3
-b $65E7
-t $6677
-b $667A
-t $6741
-b $6744
-t $67EB
-b $67F0
-t $6822
-b $6825
-t $6885
-b $6892
-t $68BC
-b $68CA
-t $68E9
-b $68EC
+b $61D8 Level 1 Data
+@ $61D8 label=Level_1_Data
+b $62D7 Level 2 Data
+@ $62D7 label=Level_2_Data
+b $63D4 Level 3 Data
+@ $63D4 label=Level_3_Data
+b $64D4 Level 4 Data
+@ $64D4 label=Level_4_Data
+b $65DB Level 5 Data
+@ $65DB label=Level_5_Data
+b $66EA Level 6 Data
+@ $66EA label=Level_6_Data
+b $67E4 Level 7 Data
+@ $67E4 label=Level_7_Data
+b $68FF
 b $69A8 Sentinel node graphics. Each node is 3x3x8 bytes
 @ $69A8 label=SentinelNodeGraphics
-t $6A91
-b $6A9F
-t $6AA9
-b $6AB7
-t $6AD2
-b $6AD5
-t $6ADF
-b $6AED
-t $6AF7
-b $6AFA
-t $6B20
-b $6B23
-t $6B2D
-b $6B3B
-t $6B45
-b $6B48
-t $6B6E
-b $6B71
-t $6B7B
-b $6B89
-t $6D37
+B $69A8,72
 b $6D3A
 t $6F60
 s $6F64
@@ -634,14 +595,18 @@ c $D7E5
 c $D815 Wait for a key press and figure out which key it is
 @ $D815 label=WaitAndReadKey
 c $D82D
-c $D85A
-c $D8D9
-c $D8E5
+c $D85A Render regular char with cursor effect
+@ $D85A label=DrawCharWithCursor
+c $D8D9 Render regular string with cursor effect
+@ $D8D9 label=DrawStringWithCursor
+c $D8E5 Tentative - create new enemies randomly
+@ $D8E5 label=TENTSpawnNewEnemies
 c $D9B1 Run Entity logic (not sure what type of entity yet)
 @ $D9B1 label=RunEntityLogic2
 c $D9FA
 c $DA1F
-c $DA2E
+c $DA2E Enter High Score mode, inserting new score in the table if appropriate
+@ $DA2E label=EnterHighScoreMode
 c $DB0E Main Gameplay Mode
 @ $DB0E label=MainGameplayMode
 c $DB84 Inter level activity. Show bonus message and other stuff
@@ -658,16 +623,17 @@ c $DD03
 c $DD3E
 c $DD65
 c $DDE8
-c $DE13
-c $DE40
+c $DE13 Decompress a block (single tile or id of a tile block)
+@ $DE13 label=DecompressLevelBlock
+c $DE40 Decompress level
+@ $DE40 label=DecompressLevel
 b $DE4A
 t $DED3 Text preparing the jump to load the 2nd stage
 @ $DED3 label=NextStageText
 t $DF77 Redefine keys text
 @ $DF77 label=RedefineKeysText
-b $DFF2
-t $DFFA Keyboard map
-@ $DFFA label=KeyboardMap
+t $DFF5 Keyboard map
+@ $DFF5 label=KeyboardMap
 b $E01D Defined keys data - bit, I/O row pairs
 @ $E01D label=DefinedKeysData
 t $E032 Main Menu Messages
@@ -682,7 +648,12 @@ t $E170 Demo Message
 @ $E170 label=DemoText
 t $E176 Bonus Message
 @ $E176 label=BonusMessageText
-b $E181 
+b $E181 Table pointing to the data for each level
+@ $E181 label=LevelDataTable
+W $E181
+B $E183
+L $E181,3,7
+b $E196
 t $E28A
 c $E28D
 c $E35A
