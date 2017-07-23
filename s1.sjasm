@@ -1,0 +1,4 @@
+  device zxspectrum48
+  include s1.asm
+  savebin "s1_gen.bin",16384,49152
+  
