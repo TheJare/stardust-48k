@@ -464,8 +464,6 @@ c $C1D6 Read Player Control Keys
 c $C1F4
 c $C311 Draws and advances the starfield
 @ $C311 label=DrawStarfield
-@ $C350 label=dsnext
-N $C350 ugly bugfix, SkoolKit tool replaces high score "050000" string with the text for this label (which happens to equal 50000). So we must use a 6-char label 
 c $C35C
 c $C430
 c $C442
@@ -642,6 +640,7 @@ t $E032 Main Menu Messages
 @ $E032 label=MainMenuText
 t $E086 High Score table
 @ $E086 label=HighScoreText
+t $E0BE Split text to prevent bug in SkoolKit
 t $E0FE Current Score
 @ $E0FE label=CurrentScoreText
 t $E105 High Score Messages
