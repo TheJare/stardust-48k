@@ -6,6 +6,8 @@ b $5b00 Printer
 s $5b30 Stack Area
 @ $5b30 label=StackArea
 b $5c00 System variables
+b $5c32 Table
+B $5c32,30,6
 s $5C50 Decompressed level buffer. Size still unknown.
 @ $5C50 label=DecompressedLevelBuffer
 b $5E30
@@ -382,62 +384,9 @@ t $A4B0
 b $A4B3
 t $A558
 b $A55C
-t $A5EC
-b $A5F1
-t $A704
-b $A709
-t $A77C
-b $A785
-t $A7C9
-b $A7CC
-t $A835
-b $A838
-t $A87C
-b $A884
-t $A8FC
-b $A905
-t $AA10
-b $AA14
-t $AAF8
-b $AAFC
-t $ABD8
-b $ABDD
-t $ACB0
-b $ACB4
-t $AE3C
-b $AE41
-t $AF74
-b $AF79
-t $AFB8
-b $AFBD
-t $B038
-b $B049
-t $B0C4
-b $B0C8
-t $B0F4
-b $B0F8
-t $B188
-b $B18D
-t $B240
-b $B244
-t $B308
-b $B30D
-t $B458
-b $B45C
-t $B494
-b $B497
-t $B4B0
-b $B4B3
-t $B4E0
-b $B4E3
-t $B63C
-b $B640
-t $B6CC
-b $B6D0
-t $B978
-b $B988
-t $BA04
-b $BA08
+b $A560 Graphics data for a total of 83 16x16 masked sprites
+@ $A560 label=Sprite16x16MaskedGraphics
+b $BA20
 c $BDBA Main entry point and global menu loop
 @ $BDBA label=GlobalMainLoop
 N $BDBD Attract mode menu loop
@@ -450,7 +399,9 @@ c $C027 Render current lives and level
 @ $C027 label=DrawLivesAndLevel
 b $C04B
 c $C052
-c $C0CB
+c $C0CB Generate new enemy ship
+N $C0CB A = ship type
+@ $C0CB label=CreateEnemyShip
 b $C173
 b $C177
 @ $C177 label=PlayerShields
@@ -467,9 +418,18 @@ c $C311 Draws and advances the starfield
 c $C35C
 c $C430
 c $C442
-c $C447
-c $C48D
-c $C4C4
+c $C447 Render a 16x16 masked sprite
+@ $C447 label=Draw16x16MaskedSprite
+B $C484 Self-modified relative jump - JR
+B $C485 Self-modified relative jump Offset
+@ $C485 label=DrawSpriteMaskPixelShiftJump
+C $C486
+C $C48D
+B $C4BB Self-modified relative jump - JR
+B $C4BC Self-modified relative jump Offset
+@ $C4BC label=DrawSpriteColorPixelShiftJump
+C $C4BD
+C $C4C4
 c $C502 Convert coords in H,L to backbuffer address in HL.
 @ $C502 label=CoordsToBackbuffer
 c $C514
@@ -494,15 +454,27 @@ c $C7E8 Clear backbuffer
 c $C810
 c $C832
 b $C85B
-t $C884
-b $C887
-t $C89B
-b $C8A1
-b $CA12 
+@ $C85B label=NumEnemies
+@ $C85C label=EnemyTable
+B $C85C,40,8
+s $C884
+b $C8A4
+B $C8FE
+@ $C8FE label=Algo__Num
+B $C8FF
+b $C91C
+@ $C91C label=NumEnemyMissiles
+@ $C91D label=EnemyMissilesTable
+B $C91D,15,5
+b $C92C
+B $CA12 
 @ $CA12 label=MainMenuWait
-w $CA13
+W $CA13
 @ $CA13 label=RandomSeed
-b $CA15
+B $CA15
+B $CA16
+@ $CA16 label=NumEnemyShips
+B $CA17
 t $CA4A
 b $CA5D
 t $CA68
@@ -510,6 +482,8 @@ b $CA86
 b $CA8D Starfield vertical positions (index is used for X coordinate)
 @ $CA8D label=StarfieldData
 b $CABD
+w $CABE Enemy Spaceship Table
+@ $CABE label=EnemySpaceshipTable
 c $CAFE Run entity logic (not sure which type of entity yet)
 @ $CAFE label=RunEntityLogic
 c $CB2A
@@ -557,6 +531,13 @@ c $D266
 b $D2A3
 c $D34D
 b $D35C
+B $D364
+@ $D364 label=Algo_max10_Num
+B $D365
+W $D366
+B $D368
+B $D369
+s $D36A
 w $D36C Temporary storage for SP
 @ $D36C label=TempSaveSP
 c $D36E
@@ -564,7 +545,9 @@ c $D385
 c $D39B
 c $D3D1
 c $D3E6
+@ $D3E6 label=DrawSentinelOnHUD
 c $D411
+@ $D411 label=NextScreenScanline
 c $D420 Render regular string
 @ $D420 label=DrawString
 c $D43F
@@ -621,6 +604,7 @@ c $DCD8
 c $DCFF
 c $DD03
 c $DD3E
+@ $DD64 label=LogicStateNOPFunc
 c $DD65
 c $DDE8
 c $DE13 Decompress a block (single tile or id of a tile block)
@@ -636,6 +620,12 @@ t $DFF5 Keyboard map
 @ $DFF5 label=KeyboardMap
 b $E01D Defined keys data - bit, I/O row pairs
 @ $E01D label=DefinedKeysData
+B $E01D,14,2
+b $E02B
+b $E02C
+b $E02E
+w $E030
+@ $E030 label=ParamBackbufferDest
 t $E032 Main Menu Messages
 @ $E032 label=MainMenuText
 t $E086 High Score table
@@ -655,8 +645,12 @@ W $E181
 B $E183
 L $E181,3,7
 b $E196
-t $E28A
-c $E28D
+@ $E196 label=LevelTileBlockDictionary
+N $E196 First byte is block length. Then follow N-1 bytes with tile ids, which can themselves be block tiles rather than individual tiles
+c $E28D Run enemy missiles
+@ $E28D label=RunEnemyMissiles
+C $E337
+@ $E337 label=RemoveMissile
 c $E35A
 c $E36D
 c $E388
@@ -667,9 +661,9 @@ c $E417
 c $E455
 c $E47F
 b $E4CA
-b $E4D2
+B $E4D2
 @ $E4D2 label=PlayerLivesLeft
-b $E4D3
+B $E4D3
 @ $E4D3 label=CurrentLevel
 b $E4D4
 t $EC9E
