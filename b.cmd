@@ -16,6 +16,6 @@ d:\Soft\Python3\python skoolkit-6.0\skool2html.py s1.skool
 
 REM these generate the executable z80 snapshot
 sjasmplus-win64\sjasmplus.exe --sym=s1_gen.sym s1.sjasm
-d:\Soft\Python3\python skoolkit-6.0\bin2sna.py -s 48570 -p 23344 s1_gen.bin
+d:\Soft\Python3\python skoolkit-6.0\bin2sna.py -s 48517 -p 23346 s1_gen.bin
 REM d:\Soft\Python3\python skoolkit-6.0\snapmod.py -r iy=51394 -r ix=57478 -s iff=0 -f s1_gen.z80
 d:\Soft\Python3\python skoolkit-6.0\snapmod.py -s border=0 -s iff=0 -f s1_gen.z80

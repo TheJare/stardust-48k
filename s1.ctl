@@ -19,7 +19,7 @@ b $5ED0
 t $5EFC
 @ $5F00 label=CharsetGraphics
 N $5F00 The actual charset begins 32*8 bytes further ahead, ASCII 0-31 are not renderable
-b $5F02
+b $5F05
 b $6000 Actual character set graphics, 8 bytes per char
 b $61D8 Level 1 Data
 @ $61D8 label=Level_1_Data
@@ -40,354 +40,14 @@ b $69A8 Sentinel node graphics. Each node is 3x3x8 bytes
 @ $69A8 label=SentinelNodeGraphics
 B $69A8,72
 b $6D3A
-t $6F60
-s $6F64
-t $6F78
-b $6F7C
-t $6FC0
-b $6FC3
-t $6FD0
-b $6FE4
-t $6FF0
-b $6FF4
-t $7010
-b $7014
-t $7028
-b $7034
-t $7040
-b $7044
-t $7070
-b $7073
-t $70E0
-b $70E3
-t $7160
-b $716C
-t $71D8
-b $71DC
-t $7338
-b $733B
-t $7348
-b $734B
-t $74E0
-b $74E4
-t $74F9
-b $74FC
-t $7519
-b $751C
-t $7539
-b $754C
-t $7560
-b $7564
-t $7578
-b $757B
-t $7619
-b $761C
-t $7629
-b $7634
-t $7641
-b $7644
-t $7678
-b $767B
-t $7688
-b $76AB
-t $76C0
-b $76C3
-t $76E0
-b $76E4
-t $7760
-b $7764
-t $79A4
-b $79A8
-t $79F9
-b $7A04
-t $7A51
-b $7A54
-t $7A60
-b $7A74
-t $7A80
-b $7A84
-t $7AB8
-b $7ABC
-t $7AC8
-b $7AEB
-t $7B58
-b $7B64
-t $7B70
-b $7B7C
-t $7B98
-b $7B9C
-t $7BC0
-b $7BC3
-t $7BD8
-b $7BE4
-t $7BF0
-b $7BF4
-t $7C26
-b $7C29
-t $7CE0
-s $7CE4
-t $7CF8
-b $7D04
-t $7D40
-b $7D44
-t $7D80
-b $7D83
-t $7E98
-b $7EA3
-t $8030
-b $803B
-t $8048
-b $8053
-t $8060
-b $807C
-t $80E0
-b $80FB
-t $8108
-b $810B
-t $8120
-b $812B
-t $8140
-b $814B
-t $8178
-b $8186
-t $8198
-b $81A3
-t $81C0
-b $81C4
-t $81E0
-b $81EC
-t $8250
-b $826C
-t $827F
-b $828C
-t $82D0
-b $82EC
-t $8358
-b $8364
-t $83BA
-b $83BD
-t $83C8
-b $83EC
-t $8450
-b $8474
-t $8480
-b $8483
-t $84D0
-b $84EC
-t $850F
-b $8514
-t $854F
-b $8564
-t $857C
-b $8580
-t $8598
-b $859B
-t $85A8
-b $85AB
-t $85BC
-b $85C0
-t $86BF
-b $86C2
-t $86F8
-b $870B
-t $8808
-b $8823
-t $88AE
-b $88B1
-t $8969
-b $899C
-t $89A9
-b $89D4
-t $89E9
-b $89F4
-t $8A09
-b $8A0C
-t $8A39
-b $8A3C
-t $8A51
-b $8A54
-t $8A69
-b $8A74
-t $8A90
-b $8A93
-t $8AD1
-b $8AD4
-t $8B08
-b $8B13
-t $8B88
-b $8B93
-t $8BE0
-b $8BEC
-t $8C00
-b $8C44
-t $8C50
-b $8C6C
-t $8C80
-b $8C9C
-t $8CA8
-b $8CC4
-t $8CD0
-b $8CEC
-t $8D00
-b $8D0C
-t $8D30
-b $8D44
-t $8D50
-b $8D6C
-t $8D7E
-b $8D8A
-t $8DD0
-b $8DEC
-t $8DFE
-b $8E0A
-t $8E50
-b $8E6C
-t $8E7E
-b $8E8A
-t $8E96
-b $8E99
-t $8ED0
-b $8EEC
-t $8EFE
-b $8F12
-t $8F1E
-b $8F21
-t $8F50
-b $8F5C
-t $8F6C
-b $8F6F
-t $8FD4
-b $8FD8
-t $8FEC
-b $8FEF
-t $9054
-b $9057
-t $90B1
-b $90B4
-t $90E0
-b $90E4
-t $9100
-b $9104
-t $9110
-b $9114
-t $91E0
-b $91E4
-t $91F0
-b $91FC
-t $9208
-b $920B
-t $9220
-b $9223
-t $9260
-b $9264
-t $9270
-b $927C
-t $9322
-b $9325
-t $933C
-b $9341
-t $948B
-b $9497
-t $94AC
-b $94AF
-t $94E0
-b $94EB
-t $9520
-b $9523
-t $9560
-b $956C
-t $95A1
-b $95A4
-t $95E8
-b $95EB
-t $95F8
-b $95FC
-t $9640
-b $964C
-t $9658
-b $965C
-t $96C0
-b $96CC
-t $96D8
-b $96DC
-t $9706
-b $9709
-t $9718
-b $9729
-t $9827
-b $982A
-t $9870
-b $9874
-t $98C9
-b $98CC
-t $98F0
-b $98F3
-t $99E0
-b $99E4
-t $99F0
-b $99F4
-t $9A40
-b $9A44
-t $9A50
-b $9A54
-t $9B80
-b $9B83
-t $9C81
-b $9C84
-t $9CE1
-b $9CE4
-t $9DE0
-b $9DE4
-t $9DF0
-b $9DF3
-t $9E30
-b $9E33
-t $9E40
-b $9E64
-t $9EB8
-b $9EBC
-t $9EC8
-b $9ECB
-t $9EE0
-b $9EE4
-t $9F08
-b $9F0C
-t $9F38
-b $9F3B
-t $9F60
-b $9F64
-t $9FE0
-b $9FE4
-t $A060
-b $A064
-t $A0E9
-b $A0EC
-t $A119
-b $A11C
-t $A129
-b $A12C
-t $A158
-b $A15C
-t $A168
-b $A16C
-t $A1D8
-b $A204
-t $A221
-b $A224
-t $A278
-b $A27C
-t $A288
-b $A28C
-t $A308
-b $A30B
-t $A4B0
-b $A4B3
-t $A558
-b $A55C
+b $6DE0 Level Tile Graphics Data: 111 tiles at 4x32 bytes per tile
+@ $6DE0 label=LevelTileGraphics
 b $A560 Graphics data for a total of 83 16x16 masked sprites
 @ $A560 label=Sprite16x16MaskedGraphics
 b $BA20
 @ $BA20 label=PlayerDemoInputData
+c $BD85
+@ $BD85 label=ProgramEntryPoint
 c $BDBA Main entry point and global menu loop
 @ $BDBA label=GlobalMainLoop
 N $BDBD Attract mode menu loop
@@ -401,10 +61,15 @@ c $C027 Render current lives and level
 b $C04B
 b $C052 Self-modified absolute jump - JP
 @ $C052 label=RunPlayerAI
-W $C053 Self-modified relative jump Offset
+W $C053 Self-modified absolute jump address
 @ $C053 label=CurrentPlayerAIFuncPtr
 c $C055 Player AI function 1
 @ $C055 label=PlayerAI_1_Func
+b $C07E Self-modified call - CALL
+@ $C07E label=RunPlayerControl
+W $C07F Self-modified call address
+@ $C07F label=CurrentPlayerControlFuncPtr
+C $C081
 c $C0CB Generate new enemy ship
 N $C0CB A = ship type
 @ $C0CB label=CreateEnemyShip
@@ -419,9 +84,9 @@ c $C178
 c $C17F
 @ $C17F label=EnemyAI_10_Func
 c $C19E
-@ $C19E label=ReadPlayerDemoInput
+@ $C19E label=ReadPlayerDemoInputFunc
 c $C1AC
-@ $C1AC label=ReadPlayerInput
+@ $C1AC label=ReadPlayerInputFunc
 C $C1D6 Read Player Control Keys
 @ $C1D6 label=ReadControlKeys
 c $C1F4
@@ -586,15 +251,17 @@ c $D595 Render a double-height stippled string
 c $D5A3
 c $D5DF Dump backbuffer to screen
 @ $D5DF label=ShowBackbuffer
-b $D625
-w $D63E Table with addresses of the start of each line in the screen
+c $D625
+@ $D625 label=GenerateScreenLinesTable
+s $D63E Table with addresses of each backbuffer line in the screen
 @ $D63E label=ScreenLinesTable
 c $D77E
 c $D7AF Show high scores
 @ $D7AF label=HighScoresMode
 c $D7CA Check keyboard. Return NZ if any key is pressed
 @ $D7CA label=IsAnyKeyDown
-c $D7D2
+c $D7D2 Setup and run the Demo
+@ $D7D2 label=RunDemo
 c $D7E5
 c $D815 Wait for a key press and figure out which key it is
 @ $D815 label=WaitAndReadKey
@@ -633,7 +300,7 @@ c $DE13 Decompress a block (single tile or id of a tile block)
 @ $DE13 label=DecompressLevelBlock
 c $DE40 Decompress level
 @ $DE40 label=DecompressLevel
-b $DE4A
+c $DE4A
 @ $DE4A label=EnemyAI_9_Func
 t $DED3 Text preparing the jump to load the 2nd stage
 @ $DED3 label=NextStageText
@@ -649,7 +316,7 @@ b $E02C
 b $E02E
 B $E02F
 @ $E02F label=IsKempstonJoystick
-w $E030
+W $E030
 @ $E030 label=ParamBackbufferDest
 t $E032 Main Menu Messages
 @ $E032 label=MainMenuText
@@ -694,23 +361,36 @@ c $E417
 c $E455
 c $E47F
 b $E4CA
-B $E4CD
+B $E4CD,1
 @ $E4CD label=ForceKeyboardInput
-B $E4D2
+B $E4D2,1
 @ $E4D2 label=PlayerLivesLeft
-B $E4D3
+B $E4D3,1
 @ $E4D3 label=CurrentLevel
-W $E4D4
+W $E4D4,2
 @ $E4D4 label=PlayerDemoCurrentInput
-t $EC9E
-b $ECA2
-t $ECAC
-b $ECB0
-t $ED26
-b $ED2A
-t $EFB4
-b $EFB7
-t $EFE9
-b $EFF8
+c $E9AB
+@ $E9AB label=PlayMusic
+w $EA34
+b $EA54
+c $EE70
+@ $EE70 label=LoadNextStage
+c $EF9C
+@ $EF9C label=LoadingClearScreen
+c $EFBE
+@ $EFBE label=DrawLoadingString
+C $EFDF
+@ $EFDF label=DrawSearchingNextStage
+T $EFE9
+@ $EFE9 label=SearchingNextStageText
+C $EFF9
+@ $EFF9 label=DrawLoadingNextStage
+T $F003
+@ $F003 label=LoadingNextStageText
+C $F013
+@ $F013 label=DrawErrorLoading
+T $F01D
+@ $F01D label=ErrorLoadingText
+s $F02C
 s $F100
 @ $F100 label=Backbuffer

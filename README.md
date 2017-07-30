@@ -56,7 +56,7 @@ Credits for the original game:
 
 - Javier Arevalo: programming, level design, stage 1 level art
 - Juan Carlos Arevalo: programming, design
-- Julio Martin: sprite art, all 2nd stage art
+- Julio Martin: HUD, sprite art, all 2nd stage art
 - Gonzalo Martin and Cesar Astudillo: Music
 - Javier Cano: production
 - Jose Manuel Muñoz: original concept
