@@ -387,6 +387,7 @@ b $A55C
 b $A560 Graphics data for a total of 83 16x16 masked sprites
 @ $A560 label=Sprite16x16MaskedGraphics
 b $BA20
+@ $BA20 label=PlayerDemoInputData
 c $BDBA Main entry point and global menu loop
 @ $BDBA label=GlobalMainLoop
 N $BDBD Attract mode menu loop
@@ -398,19 +399,30 @@ c $C00A Check if Pause key is pressed. If so, wait until it is released and any 
 c $C027 Render current lives and level
 @ $C027 label=DrawLivesAndLevel
 b $C04B
-c $C052
+b $C052 Self-modified absolute jump - JP
+@ $C052 label=RunPlayerAI
+W $C053 Self-modified relative jump Offset
+@ $C053 label=CurrentPlayerAIFuncPtr
+c $C055 Player AI function 1
+@ $C055 label=PlayerAI_1_Func
 c $C0CB Generate new enemy ship
 N $C0CB A = ship type
 @ $C0CB label=CreateEnemyShip
 b $C173
-b $C177
+B $C173,2
+@ $C173 label=PlayerCoords
+S $C175,2
+B $C177
 @ $C177 label=PlayerShields
-b $C178
 c $C178
+@ $C178 label=EnemyAI_1_Func
 c $C17F
-b $C19E
+@ $C17F label=EnemyAI_10_Func
+c $C19E
+@ $C19E label=ReadPlayerDemoInput
 c $C1AC
-c $C1D6 Read Player Control Keys
+@ $C1AC label=ReadPlayerInput
+C $C1D6 Read Player Control Keys
 @ $C1D6 label=ReadControlKeys
 c $C1F4
 c $C311 Draws and advances the starfield
@@ -438,8 +450,10 @@ c $C54E
 c $C56D
 c $C573
 c $C59B
-c $C5A8
-c $C614
+c $C5A8 Draw Player explosion - and output random sound
+@ $C5A8 label=DrawPlayerExplosion
+c $C614 Delete one enemy ship pointed at by IX
+@ $C614 label=DeleteEnemyShip
 c $C63B Render Sentinel Node (or maybe the entire sentinel, not sure yet)
 @ $C63B label=DrawSentinelNode
 c $C726
@@ -482,8 +496,13 @@ b $CA86
 b $CA8D Starfield vertical positions (index is used for X coordinate)
 @ $CA8D label=StarfieldData
 b $CABD
-w $CABE Enemy Spaceship Table
+b $CABE Enemy Spaceship Table
 @ $CABE label=EnemySpaceshipTable
+B $CABE,3
+W $CAC1
+B $CAC3,3
+L $CABE,8,6
+s $CAEE
 c $CAFE Run entity logic (not sure which type of entity yet)
 @ $CAFE label=RunEntityLogic
 c $CB2A
@@ -495,7 +514,8 @@ c $CC9F
 c $CCC6
 c $CCEE
 c $CCFA
-b $CDDE
+c $CDDE
+@ $CDDE label=EnemyAI_7_Func
 c $CE21
 c $CE73
 c $CE95
@@ -528,7 +548,8 @@ c $D257 Make ship visible on HUD
 c $D259 Update a ship on the HUD
 @ $D259 label=UpdateShipOnHUD
 c $D266
-b $D2A3
+c $D2A3
+@ $D2A3 label=EnemyAI_8_Func
 c $D34D
 b $D35C
 B $D364
@@ -587,6 +608,7 @@ c $D8E5 Tentative - create new enemies randomly
 c $D9B1 Run Entity logic (not sure what type of entity yet)
 @ $D9B1 label=RunEntityLogic2
 c $D9FA
+@ $D9FA label=EnemyAI_6_Func
 c $DA1F
 c $DA2E Enter High Score mode, inserting new score in the table if appropriate
 @ $DA2E label=EnterHighScoreMode
@@ -612,6 +634,7 @@ c $DE13 Decompress a block (single tile or id of a tile block)
 c $DE40 Decompress level
 @ $DE40 label=DecompressLevel
 b $DE4A
+@ $DE4A label=EnemyAI_9_Func
 t $DED3 Text preparing the jump to load the 2nd stage
 @ $DED3 label=NextStageText
 t $DF77 Redefine keys text
@@ -624,10 +647,16 @@ B $E01D,14,2
 b $E02B
 b $E02C
 b $E02E
+B $E02F
+@ $E02F label=IsKempstonJoystick
 w $E030
 @ $E030 label=ParamBackbufferDest
 t $E032 Main Menu Messages
 @ $E032 label=MainMenuText
+T $E06C
+@ $E06C label=KempstonUnderlineText
+T $E07E
+@ $E07E label=KeyboardUnderlineText
 t $E086 High Score table
 @ $E086 label=HighScoreText
 t $E0BE Split text to prevent bug in SkoolKit
@@ -652,20 +681,27 @@ c $E28D Run enemy missiles
 C $E337
 @ $E337 label=RemoveMissile
 c $E35A
+@ $E35A label=EnemyAI_3_Func
 c $E36D
 c $E388
+@ $E388 label=EnemyAI_4_Func
 c $E3B0
+@ $E3B0 label=EnemyAI_5_Func
 c $E3C3
 c $E3E4
 c $E417
+@ $E417 label=EnemyAI_2_Func
 c $E455
 c $E47F
 b $E4CA
+B $E4CD
+@ $E4CD label=ForceKeyboardInput
 B $E4D2
 @ $E4D2 label=PlayerLivesLeft
 B $E4D3
 @ $E4D3 label=CurrentLevel
-b $E4D4
+W $E4D4
+@ $E4D4 label=PlayerDemoCurrentInput
 t $EC9E
 b $ECA2
 t $ECAC
