@@ -9,21 +9,17 @@ b $5b00 Printer
 s $5b30 Stack Area
 @ $5b30 label=StackArea
 b $5c00 System variables
-b $5c32 Table
-B $5c32,30,6
-s $5C50 Decompressed level buffer. Size still unknown.
+b $5c32 Level buffer, with pre-build space above
+@ $5c32 label=LevelBuffer
+S $5c33
+@ $5c33 label=LevelBuffer_plus_1
+S $5C50 Decompressed level buffer.
 @ $5C50 label=DecompressedLevelBuffer
-b $5E30
-b $5E33
-t $5E8B
-b $5E9B
-t $5EBE
-b $5ED0
-t $5EFC
+b $5E30 unknown
 @ $5F00 label=CharsetGraphics
 N $5F00 The actual charset begins 32*8 bytes further ahead, ASCII 0-31 are not renderable
-b $5F05
 b $6000 Actual character set graphics, 8 bytes per char
+@ $6000 label=ActualCharsetGraphics
 b $61D8 Level 1 Data
 @ $61D8 label=Level_1_Data
 b $62D7 Level 2 Data
@@ -41,20 +37,28 @@ b $67E4 Level 7 Data
 b $68FF
 b $69A8 Sentinel node graphics. Each node is 3x3x8 bytes
 @ $69A8 label=SentinelNodeGraphics
-B $69A8,72
-b $6D3A
+B $69A8,72 Sentinel graphic
+L $69A8,72,15
 b $6DE0 Level Tile Graphics Data: 111 tiles at 4x32 bytes per tile
 @ $6DE0 label=LevelTileGraphics
+B $6DE0,128 Tile graphic
+L $6DE0,128,111
 b $A560 Graphics data for a total of 83 16x16 masked sprites
 @ $A560 label=Sprite16x16MaskedGraphics
-b $BA20
+B $A560,64 Sprite
+L $A560,64,83
+b $BA20 Data for player input in the demo, one byte per frame
 @ $BA20 label=PlayerDemoInputData
-c $BD85
+c $BD85 Entry Point
 @ $BD85 label=ProgramEntryPoint
+c $BD8A Main function
+@ $BD8A label=Main
 c $BDBA Main entry point and global menu loop
 @ $BDBA label=GlobalMainLoop
 N $BDBD Attract mode menu loop
 @ $BDBD label=AttractMenuLoop
+@ $BE01 label=ResetMainMenu
+@ $BE06 label=MainMenuLoop
 N $BE84 Loading screen checksum protection
 @ $BE8D label=.chksumlp
 c $C00A Check if Pause key is pressed. If so, wait until it is released and any key is pressed again
@@ -77,8 +81,10 @@ c $C0CB Generate new enemy ship
 N $C0CB A = ship type
 @ $C0CB label=CreateEnemyShip
 b $C173
-B $C173,2
-@ $C173 label=PlayerCoords
+B $C173
+@ $C173 label=PlayerCoord_X
+B $C174
+@ $C174 label=PlayerCoord_Y
 S $C175,2
 B $C177
 @ $C177 label=PlayerShields
@@ -126,8 +132,13 @@ c $C63B Render Sentinel Node (or maybe the entire sentinel, not sure yet)
 @ $C63B label=DrawSentinelNode
 c $C726
 c $C75F
-c $C765
-c $C76E
+@ $C75F label=GetOrientationBits
+C $C765
+@ $C765 label=GetOrientation_2_Value
+C $C768 Get the byte from table in DE indexed by A
+@ $C768 label=GetFromTable
+c $C76E Advances coordinates in HL by orientation in A with speeds in BC
+@ $C76E label=AdvanceShipByOrientation
 c $C795
 c $C7D1 Generate random number
 @ $C7D1 label=GetRandom
@@ -143,12 +154,18 @@ s $C884
 b $C8A4
 B $C8FE
 @ $C8FE label=Algo__Num
-B $C8FF
+B $C8FF,20,5
+@ $C8FF label=Algo__Table
 b $C91C
 @ $C91C label=NumEnemyMissiles
 @ $C91D label=EnemyMissilesTable
 B $C91D,15,5
-b $C92C
+B $C927,1
+@ $C927 label=PlayerShipOrientation
+B $C928,8 Helper table with axis bits for each of 8 orientations
+@ $C928 label=OrientationBitsTable
+B $C930,8
+@ $C930 label=NextOrientation_2_Table
 B $CA12
 @ $CA12 label=MainMenuWait
 W $CA13
@@ -262,6 +279,7 @@ c $D551 Render a double-height stippled character
 c $D595 Render a double-height stippled string
 @ $D595 label=DrawDoubleHeightString
 c $D5A3
+@ $D5A3 label=DrawMainMenu
 c $D5DF Dump backbuffer to screen
 @ $D5DF label=ShowBackbuffer
 c $D625
@@ -290,8 +308,8 @@ c $D9B1 Run Entity logic (not sure what type of entity yet)
 c $D9FA
 @ $D9FA label=EnemyAI_6_Func
 c $DA1F
-c $DA2E Enter High Score mode, inserting new score in the table if appropriate
-@ $DA2E label=EnterHighScoreMode
+c $DA2E Check current score with High Scores, inserting new score in the table if appropriate
+@ $DA2E label=CheckNewHighScoreMode
 c $DB0E Main Gameplay Mode
 @ $DB0E label=MainGameplayMode
 c $DB84 Inter level activity. Show bonus message and other stuff
@@ -344,7 +362,8 @@ T $E07E
 @ $E07E label=KeyboardUnderlineText
 t $E086 High Score table
 @ $E086 label=HighScoreText
-t $E0BE Split text to prevent bug in SkoolKit
+T $E0AF Split text to prevent bug in SkoolKit
+T $E0BE Split text to prevent bug in SkoolKit
 t $E0FE Current Score
 @ $E0FE label=CurrentScoreText
 t $E105 High Score Messages
@@ -379,6 +398,8 @@ c $E417
 c $E455
 c $E47F
 b $E4CA
+B $E4CC,1
+@ $E4CC label=LastPlayerInput
 B $E4CD,1
 @ $E4CD label=ForceKeyboardInput
 B $E4D2,1
@@ -387,25 +408,159 @@ B $E4D3,1
 @ $E4D3 label=CurrentLevel
 W $E4D4,2
 @ $E4D4 label=PlayerDemoCurrentInput
+c $E5EB
+@ $E5EB label=PlayMusic_SetupInterrupts
+b $E600 Interrupt table
+@ $E600 label=PlayMusic_InterruptTable
+b $E701 Interrupt handler page
+c $E7E7
+@ $E7E7 label=PlayMusic_IMHandlerThunk
+@ $E7EA label=PlayMusic_IMHandler
+c $E80A
+@ $E80A label=PlayMusic_algo
+c $E92D
+@ $E92D label=PlayMusic_Func1
+c $E94D
+@ $E94D label=PlayMusic_Func2
+c $E96D
+@ $E96D label=PlayMusic_Func3
+c $E98C
+@ $E98C label=PlayMusic_Func4
 c $E9AB
 @ $E9AB label=PlayMusic
-w $EA34
+@ $E9F6 label=PlayMusic_OverwrittenCodeBlock
+B $EA04,1 Self Modifying Code - LD BC,xxxx
+W $EA05,2 Self Modifying code - word value
+@ $EA05 label=PlayMusic_selfmod_value_1
+B $EA16,1 Self Modifying Code - LD DE,xxxx
+W $EA17,2 Self Modifying code - word value
+@ $EA17 label=PlayMusic_selfmod_value_2
+B $EA1F,1 Self Modifying code - JP xxxx
+W $EA20,2 Self Modifying code - address
+@ $EA20 label=PlayMusic_selfmod_jump_1
+c $EA34 Piece of code copied into PlayMusic
+@ $EA34 label=PlayMusic_CodePiece1
+c $EA3C Piece of code copied into PlayMusic
+@ $EA3C label=PlayMusic_CodePiece2
+w $EA44 Jump table
+@ $EA44 label=PlayMusic_JumpTable
 b $EA54
+@ $EA54 label=MusicPlayerPlaybackState
+B $EA55
+@ $EA55 label=MusicPlayer_v2
+W $EA5C,2
+@ $EA5C label=MusicPlayer_v3
+W $EA5E,2
+@ $EA5E label=MusicPlayer_v4
+w $EA60
+@ $EA60 label=MusicPlayer_NoteTable
+w $EADA
+@ $EADA label=Music_Script_1_Table
+b $EAE4
+@ $EAE4 label=Music_Script_Buffer
+w $EB0E
+@ $EB0E label=Music_Script_2_Table
+b $EB16
+@ $EB16 label=Music_ScriptData
+B $EB38
+B $EB49
+W $EB4A
+L $EB49,3,4
+B $EB56
+B $EB65
+B $EB75
+B $EB84
+B $EB94
+B $EB9D
+B $EBA6
+B $EBAF
+B $EBB8
+W $EBB9
+L $EBB8,3,4
+B $EBC5
+W $EBC6
+L $EBC5,3,4
+B $EBD2
+B $EBDA
+B $EBE2
+B $EBEA
+B $EBF2
+B $EBFA
+B $EC02
+B $EC0A
+B $EC0D
+W $EC0E
+L $EC0D,3,8
+B $EC26
+W $EC27
+L $EC26,3,8
+B $EC3F
+B $EC44
+B $EC49
+B $EC4E
+W $EC4F
+L $EC4E,3,8
+B $EC67
+B $EC74
+B $ECB1
+B $ECC5
+B $ECD4
+B $ECE3
+B $ED06
+B $ED20
+B $ED36
+B $ED57
+B $ED78
+B $EDA0
+W $EDA1
+L $EDA0,3,9
+B $EDBB
+B $EDBC
+W $EDBD
+L $EDBC,3,4
+B $EDC8
+B $EDC9
+W $EDCA
+L $EDC9,3,4
+B $EDD5
+B $EDD6
+W $EDD7
+L $EDD6,3,5
+B $EDE5
+B $EDE6
+W $EDE7
+L $EDE6,3,3
+B $EDEF,3
+B $EDF2
+W $EDF3
+L $EDF2,3,6
+B $EE04
+B $EE05
+W $EE06
+B $EE08,10
+B $EE12
+W $EE13
+L $EE12,3,14
+B $EE3C
+W $EE3D
+L $EE3C,3,17
+
+B $EE6F
 c $EE70
 @ $EE70 label=LoadNextStage
 c $EF9C
 @ $EF9C label=LoadingClearScreen
 c $EFBE
 @ $EFBE label=DrawLoadingString
-C $EFDF
+c $EFDF
 @ $EFDF label=DrawSearchingNextStage
 T $EFE9
 @ $EFE9 label=SearchingNextStageText
-C $EFF9
+c $EFF9
 @ $EFF9 label=DrawLoadingNextStage
 T $F003
 @ $F003 label=LoadingNextStageText
-C $F013
+c $F013
 @ $F013 label=DrawErrorLoading
 T $F01D
 @ $F01D label=ErrorLoadingText
