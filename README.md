@@ -23,9 +23,16 @@ code, and hopefully lead to an almost-ready-to-assemble source file.
 - Use SkoolKit with the snapshot and the map file, to create a control file
 that contains information on the snapshot memory map: code and data sections,
 mainly.
+
+Now we iterate on this point as many times as needed (a lot) to improve
+the control file and reach a very complete assembly file.
+
 - Generate an assembly source file from the snapshot and the control file
 - Study the assembly code and iterate on the control file to add more
 information: labels, comments, better delineation of data sections, etc.
+
+At any point, with the assembly file in a good state, we can generate an executable.
+
 - Assemble the source code into a binary, and convert it to snapshot format,
 with a valid stack pointer and entry point. Note the original snapshot was
 captured in the middle of the game running, but I wanted a reasonable
@@ -47,9 +54,9 @@ your own installation if you want to use run it yourself.
 
 Credits for the original game:
 
-- Javier Arevalo: programming, level design, level art
+- Javier Arevalo: programming, level design, stage 1 level art
 - Juan Carlos Arevalo: programming, design
-- Julio Martin: art
+- Julio Martin: sprite art, all 2nd stage art
 - Gonzalo Martin and Cesar Astudillo: Music
 - Javier Cano: production
 - Jose Manuel Muñoz: original concept
