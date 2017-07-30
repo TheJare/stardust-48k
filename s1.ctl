@@ -1,3 +1,7 @@
+s $0BB8
+@ $0BB8 label=NoiseLocationInRom
+s $168C
+@ $168C label=LongRandomSoundLocationInRom
 b $4000 Screen Pixel Buffer
 @ $4000 label=ScreenPixelBuffer
 b $5800 Screen Color Buffer
@@ -146,7 +150,7 @@ b $C91C
 @ $C91D label=EnemyMissilesTable
 B $C91D,15,5
 b $C92C
-B $CA12 
+B $CA12
 @ $CA12 label=MainMenuWait
 W $CA13
 @ $CA13 label=RandomSeed
@@ -226,10 +230,14 @@ B $D369
 s $D36A
 w $D36C Temporary storage for SP
 @ $D36C label=TempSaveSP
-c $D36E
-c $D385
-c $D39B
-c $D3D1
+c $D36E Play a sound according to parameters in E and B
+@ $D36E label=PlaySimpleSound
+c $D385 Play noise taken from ROM (preudo-random) bytes, for a length of C
+@ $D385 label=PlayNoise
+c $D39B Play a sound according to parameters in HL and BC
+@ $D39B label=PlayComplexSound
+c $D3D1 Play a sound defined by B bytes at HL
+@ $D3D1 label=PlaySoundFromMemory
 c $D3E6
 @ $D3E6 label=DrawSentinelOnHUD
 c $D411
@@ -238,12 +246,18 @@ c $D420 Render regular string
 @ $D420 label=DrawString
 c $D43F
 c $D476
+@ $D476 label=StepLongRandomSound
 c $D48D
+@ $D48D label=StepLongNoise
 c $D4A2
+@ $D4A2 label=StepLongSimpleSound
 c $D4B7
+@ $D4B7 label=StepLongComplexSound
 c $D4CF
-c $D513
+c $D513 Fill the attributes of the play area of the screen, leaving the HUD intact.
+@ $D513 label=FillPlayAreaAttributes
 c $D527
+@ $D527 label=ResetPlayerShields
 c $D551 Render a double-height stippled character
 @ $D551 label=DrawDoubleHeightChar
 c $D595 Render a double-height stippled string
@@ -312,8 +326,13 @@ b $E01D Defined keys data - bit, I/O row pairs
 @ $E01D label=DefinedKeysData
 B $E01D,14,2
 b $E02B
+@ $E02B label=LongComplexSoundCounter
 b $E02C
+@ $E02C label=LongRandomSoundCounter
+b $E02D
+@ $E02D label=LongNoiseCounter
 b $E02E
+@ $E02E label=LongSimpleSoundCounter
 B $E02F
 @ $E02F label=IsKempstonJoystick
 W $E030
