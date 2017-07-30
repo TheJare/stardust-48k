@@ -1,9 +1,8 @@
-s $0BB8
-@ $0BB8 label=NoiseLocationInRom
-s $168C
-@ $168C label=LongRandomSoundLocationInRom
 b $4000 Screen Pixel Buffer
 @ $4000 label=ScreenPixelBuffer
+@ $4000 equ=NoiseLocationInRom=$0BB8
+@ $4000 equ=LongRandomSoundLocationInRom=$168C
+@ $4000 equ=Backbuffer=$F100
 b $5800 Screen Color Buffer
 @ $5800 label=ScreenColorBuffer
 b $5b00 Printer
@@ -410,6 +409,6 @@ C $F013
 @ $F013 label=DrawErrorLoading
 T $F01D
 @ $F01D label=ErrorLoadingText
-s $F02C
-s $F100
+i $F02C
+i $F100
 @ $F100 label=Backbuffer

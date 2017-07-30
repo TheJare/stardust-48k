@@ -1,4 +1,18 @@
   device zxspectrum48
+
+; Bug in skool2asm makes the EQU directives indented and sjasmplus rejects them
+; So I place them manually here for now. sjasmplus complains abut the EQU lines
+; but continues and works out fine
+
+NoiseLocationInRom = $0BB8
+LongRandomSoundLocationInRom = $168C
+Backbuffer = $F100
+
   include s1.asm
-  savebin "s1_gen.bin",16384,49152
+
+  ASSERT $ <= Backbuffer
+
+; For some reason I can't just save a bin smaller than the entire RAM
+
+  savebin "s1_gen.bin",ScreenPixelBuffer,65536-ScreenPixelBuffer
   
