@@ -198,6 +198,7 @@ c $CC4B
 c $CC9F
 c $CCC6
 c $CCEE
+@ $CCEE label=CompareCoord
 c $CCFA
 c $CDDE
 @ $CDDE label=EnemyAI_7_Func
@@ -325,8 +326,10 @@ c $DCFF
 c $DD03
 c $DD3E
 @ $DD64 label=LogicStateNOPFunc
-c $DD65
-c $DDE8
+c $DD65 Check collision of energy barrier with player
+@ $DD65 label=CheckBarrierCollisionPlayer
+c $DDE8 Check collision of enemy with player
+@ $DDE8 label=CheckEnemyCollisionPlayer
 c $DE13 Decompress a block (single tile or id of a tile block)
 @ $DE13 label=DecompressLevelBlock
 c $DE40 Decompress level
