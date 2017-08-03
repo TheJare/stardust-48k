@@ -99,6 +99,9 @@ c $C1AC
 C $C1D6 Read Player Control Keys
 @ $C1D6 label=ReadControlKeys
 c $C1F4
+@ $C1F4 label=DrawEnemyFighters
+C $C2EE Removes the enemy fighter pointed to by IX from the table
+@ $C2EE label=RemoveEnemyighter
 c $C311 Draws and advances the starfield
 @ $C311 label=DrawStarfield
 c $C35C
@@ -128,8 +131,8 @@ c $C5A8 Draw Player explosion - and output random sound
 @ $C5A8 label=DrawPlayerExplosion
 c $C614 Delete one enemy ship pointed at by IX
 @ $C614 label=DeleteEnemyShip
-c $C63B Render Sentinel Node (or maybe the entire sentinel, not sure yet)
-@ $C63B label=DrawSentinelNode
+c $C63B Render Sentinel Nodes (5x5)
+@ $C63B label=DrawSentinelNodes
 c $C726
 c $C75F
 @ $C75F label=GetOrientationBits
@@ -144,7 +147,8 @@ c $C7D1 Generate random number
 @ $C7D1 label=GetRandom
 c $C7E8 Clear backbuffer
 @ $C7E8 label=ClearBackbuffer
-c $C810
+c $C810 Enemy fighter at position BC, and fifth parameter (?) in A'. Returns carry == success.
+@ $C810 label=CreateEnemyFighter
 c $C832
 b $C85B
 @ $C85B label=NumEnemies
@@ -152,10 +156,16 @@ b $C85B
 B $C85C,40,8
 s $C884
 b $C8A4
-B $C8FE
-@ $C8FE label=Algo__Num
-B $C8FF,20,5
-@ $C8FF label=Algo__Table
+@ $C8A4 label=SentinelData
+B $C8A4,25,5
+b $C8BD
+b $C8D6
+b $C8FD
+b $C8FE Enemy fighter data
+@ $C8FE label=EnemyFighterCount
+@ $C8FF label=EnemyFighterTable
+B $C8FF,20,5    X, Y, Sprite, ExplosionSprite, ???
+b $C913
 b $C91C
 @ $C91C label=NumEnemyMissiles
 @ $C91D label=EnemyMissilesTable
@@ -192,11 +202,16 @@ c $CAFE Run entity logic (not sure which type of entity yet)
 @ $CAFE label=RunEntityLogic
 c $CB2A
 c $CB6F
+@ $CB6F label=routine_CB6F
+c $CB9C
+@ $CB9C label=routine_CB9C
+@ $CBB6 label=routine_CB9C_orientation_SelfMod
 c $CC07
 c $CC27
 c $CC4B
 c $CC9F
 c $CCC6
+@ $CCC6 label=Draw32x32MaskedSprite
 c $CCEE
 @ $CCEE label=CompareCoord
 c $CCFA
