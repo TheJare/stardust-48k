@@ -51,9 +51,10 @@ your own installation if you want to use run it yourself.
 
 ## Tools
 
-- *SkoolKit*: [http://skoolkit.ca/](http://skoolkit.ca/) Note: requires Python 3.4+
-- *Fuse - The Free Unix Spectrum Emulator*: [http://fuse-emulator.sourceforge.net/](http://fuse-emulator.sourceforge.net/) Don't worry, it's been ported to many operating systems besides Unix.
-- *SjAsmPlus*: [https://github.com/mkoloberdin/sjasmplus](https://github.com/mkoloberdin/sjasmplus)
+- **SkoolKit**: [http://skoolkit.ca/](http://skoolkit.ca/) Note: requires Python 3.4+
+- **Fuse - The Free Unix Spectrum Emulator**: [http://fuse-emulator.sourceforge.net/](http://fuse-emulator.sourceforge.net/) Don't worry, it's been ported to many operating systems besides Unix.
+- **SjAsmPlus**: [https://github.com/mkoloberdin/sjasmplus](https://github.com/mkoloberdin/sjasmplus)
+- **stb_image_write**: [http://nothings.org/stb/stb_image_write.h](http://nothings.org/stb/stb_image_write.h)
 
 ## Credits
 
