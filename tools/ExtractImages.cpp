@@ -1,6 +1,8 @@
 
 #include <cstdio>
 #include <vector>
+#include <array>
+#include <sstream>
 #include <stdarg.h>
 
 #define STB_IMAGE_WRITE_IMPLEMENTATION
@@ -88,6 +90,39 @@ void dumpMaskSprites(char const *filename, int w, int h, bytes const &bin, int s
     img.save(filename);
 }
 
+void dumpLevel(image &img, bytes const &level, bytes const &bin) {
+    for (int i = 0; i < level.size(); ++i) {
+        int x = (i % 6)*32;
+        int y = (i / 6)*32;
+
+        dumpSprite(img, bin, 0x00006DE0-0x4000 + (32*level[i]*4), 32, 32, 4, x, y);
+    }
+}
+
+void decodeLevelTile(bytes &dest, bytes const &bin, uint8_t tile) {
+    if (tile & 0x80) {
+        int n = tile & 0x7F;
+        int dictoffset = 0xE196 - 0x4000;
+        while (n-- > 0) {
+            dictoffset += bin[dictoffset];
+        }
+        n = bin[dictoffset];
+        while (--n > 0) {
+            decodeLevelTile(dest, bin, bin[++dictoffset]);
+        }
+    } else {
+        dest.push_back(tile);
+    }
+}
+
+bytes decodeLevel(bytes const &bin, int offset) {
+    bytes level;
+    while (bin[offset] != 0xFF) {
+        decodeLevelTile(level, bin, bin[offset++]);
+    }
+    return level;
+}
+
 int main(int argc, char const *argv[]) {
     if (argc < 2) {
         error("No file given");
@@ -101,4 +136,18 @@ int main(int argc, char const *argv[]) {
     dumpSprites("sprite_masks.png", 256, 256, bin, 0x0000A560-0x4000, 83, 16, 16, 4, 0, 0);
     dumpSprites("sprites_bits.png", 256, 256, bin, 0x0000A560-0x4000+2, 83, 16, 16, 4, 0, 0);
     dumpMaskSprites("sprites.png", 256, 256, bin, 0x0000A560-0x4000, 83, 16, 16, 4, 0, 0);
+
+    array<int, 7> leveloffsets{0x61D8, 0x62D7, 0x63D4, 0x64D4, 0x65DB, 0x66EA, 0x67E4};
+
+    int nlevel = 1;
+    for (auto leveloffset: leveloffsets) {
+        auto level = decodeLevel(bin, leveloffset-0x4000);
+        image img(32*6, 32*((level.size()+5)/6), 4);
+        dumpLevel(img, level, bin);
+        stringstream filename;
+        filename << "level_" << nlevel << ".png";
+        img.save(filename.str().c_str());
+        nlevel++;
+    }
+    
 }
