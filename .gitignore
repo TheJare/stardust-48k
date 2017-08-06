@@ -8,3 +8,5 @@ fuse-utils-1.3.2-win32/
 skoolkit-6.0/
 *.exe
 *.obj
+*.pdb
+*.ilk

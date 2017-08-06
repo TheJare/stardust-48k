@@ -4,18 +4,23 @@ This little project tries to recover a reasonable version of the source code
 for our game Stardust, to celebrate the 30 years since its original release
 back in 1987.
 
-I have focused on the Sinclair ZX Spectrum version of the game. We ported it
+We have focused on the Sinclair ZX Spectrum version of the game. We ported it
 to the Amstrad CPC, while other people did the MSX, C-64 and eventual PC
-versions. But my nostalgia starts and ends with the Spectrum.
+versions. But doing this for the Spectrum is work enough.
+
+The authors wish to dedicate this project to the memory of Javier Cano. Rest
+in peace, our beloved mentor.
 
 ## How was this done?
 
-I downloaded a few Spectrum emulators since I didn't know which were best
-and what they could do. I settled on Fuse and its toolset. Next was an image
-of the tape from the original Spanish release. I ran the tape in the emulator
+We downloaded a few Spectrum emulators since we didn't know which were best
+and what they could do. We settled on Fuse and its toolset. Next was an image
+of the tape from the original Spanish release. We ran the tape in the emulator
 and waited for the game to load. It does a little intro and credits sequence,
-which I didn't bother to capture. Once the game was in the main menu, I
-grabbed a snapshot in z80 format, and worked from there.
+which we didn't bother to capture at first. Once the game was in the main menu,
+we grabbed a snapshot in z80 format, and worked from there.
+
+Initial steps:
 
 - Capture a profile of the game running, and generate a map file that will
 contain the code sections that have been executed. This should include most
@@ -24,7 +29,7 @@ code, and hopefully lead to an almost-ready-to-assemble source file.
 that contains information on the snapshot memory map: code and data sections,
 mainly.
 
-Now we iterate on this point as many times as needed (a lot) to improve
+Now we iterate on the next steps as many times as needed (a lot) to improve
 the control file and reach a very complete assembly file.
 
 - Generate an assembly source file from the snapshot and the control file
@@ -35,12 +40,12 @@ At any point, with the assembly file in a good state, we can generate an executa
 
 - Assemble the source code into a binary, and convert it to snapshot format,
 with a valid stack pointer and entry point. Note the original snapshot was
-captured in the middle of the game running, but I wanted a reasonable
+captured in the middle of the game running, but we wanted a reasonable
 entry point that sets everything up.
 - Tweak the snapshot to set the border color and disable interrupts.
 - At this point we have a valid snapshot that can be loaded and runs fine.
 
-I work on a Windows machine, so I have documented the commands to run the
+We work on Windows machines, so we have documented the commands to run the
 above steps inside the file [b.cmd](b.cmd). Adapt the paths in that file to
 your own installation if you want to use run it yourself.
 
@@ -54,13 +59,13 @@ your own installation if you want to use run it yourself.
 
 Credits for the original game:
 
-- Javier Arevalo: programming, level design, stage 1 level art
+- Javier Arevalo: programming, level design and art,
 - Juan Carlos Arevalo: programming, design
-- Julio Martin: HUD, sprite art, all 2nd stage art
+- Julio Martin: HUD, sprites, most art
 - Gonzalo Martin and Cesar Astudillo: Music
 - Javier Cano: production
 - Jose Manuel Muñoz: original concept
-- Published by Topo Soft
+- Originally published by Topo Soft in 1987
 
 # License
 

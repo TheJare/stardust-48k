@@ -18,7 +18,7 @@ S $5C50 Decompressed level buffer.
 b $5E30 unknown
 @ $5F00 label=CharsetGraphics
 N $5F00 The actual charset begins 32*8 bytes further ahead, ASCII 0-31 are not renderable
-b $6000 Actual character set graphics, 8 bytes per char
+b $6000 Actual character set graphics, 8 bytes per char, 59 chars
 @ $6000 label=ActualCharsetGraphics
 b $61D8 Level 1 Data
 @ $61D8 label=Level_1_Data
@@ -35,11 +35,11 @@ b $66EA Level 6 Data
 b $67E4 Level 7 Data
 @ $67E4 label=Level_7_Data
 b $68FF
-b $69A8 Sentinel node graphics. Each node is 3x3x8 bytes
+b $69A8 Sentinel node graphics. Each node is 3x3x8 bytes, 15 nodes
 @ $69A8 label=SentinelNodeGraphics
 B $69A8,72 Sentinel graphic
 L $69A8,72,15
-b $6DE0 Level Tile Graphics Data: 111 tiles at 4x32 bytes per tile
+b $6DE0 Level Tile Graphics Data: 111 tiles at 4x32 bytes per tile, 111 tiles
 @ $6DE0 label=LevelTileGraphics
 B $6DE0,128 Tile graphic
 L $6DE0,128,111
