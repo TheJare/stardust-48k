@@ -79,6 +79,7 @@ W $C07F Self-modified call address
 C $C081
 c $C0CB Generate new enemy ship
 N $C0CB A = ship type
+N $C0CB B = 6 (?)
 @ $C0CB label=CreateEnemyShip
 b $C173
 B $C173
@@ -122,14 +123,15 @@ C $C4C4
 c $C502 Convert coords in H,L to backbuffer address in HL.
 @ $C502 label=CoordsToBackbuffer
 c $C514
-c $C548
-c $C54E
-c $C56D
-c $C573
+@ $C514 label=Draw8x8Sprite
 c $C59B
 c $C5A8 Draw Player explosion - and output random sound
 @ $C5A8 label=DrawPlayerExplosion
-c $C614 Delete one enemy ship pointed at by IX
+c $C614 Delete one enemy ship
+R $C614 IX points to the ship's data in the table
+R $C614 B contains the count of ships remaining in the table, including the one being deleted.
+N $C614 Upon return, B and IX will be correct and will point to the previous ship in the table,
+N $C614 ready to be incremented to find the next ship.
 @ $C614 label=DeleteEnemyShip
 c $C63B Render Sentinel Nodes (5x5)
 @ $C63B label=DrawSentinelNodes
@@ -159,8 +161,17 @@ b $C8A4
 @ $C8A4 label=SentinelData
 B $C8A4,25,5
 b $C8BD
+@ $C8BD label=EnemyBulletCount
+@ $C8BE label=EnemyBulletTable
+B $C8BE,24,4
 b $C8D6
+@ $C8D6 label=PlayerBulletCount
+@ $C8D7 label=PlayerBulletTable
+B $C8D7,36,4
+w $C8FB
+@ $C8FB label=SavedBulletTableEnd
 b $C8FD
+@ $C8FD label=SavedBulletTableType
 b $C8FE Enemy fighter data
 @ $C8FE label=EnemyFighterCount
 @ $C8FF label=EnemyFighterTable
@@ -183,7 +194,8 @@ W $CA13
 B $CA15
 B $CA16
 @ $CA16 label=NumEnemyShips
-B $CA17
+@ $CA17 label=Sprite8x8Table
+B $CA17,48,16
 t $CA4A
 b $CA5D
 t $CA68
@@ -196,16 +208,20 @@ b $CABE Enemy Spaceship Table
 B $CABE,3
 W $CAC1
 B $CAC3,3
-L $CABE,8,6
-s $CAEE
-c $CAFE Run entity logic (not sure which type of entity yet)
-@ $CAFE label=RunEntityLogic
-c $CB2A
+L $CABE,8,8
+c $CAFE Run the logic for all enemy ships
+@ $CAFE label=RunEnemyShipLogic
+c $CB2A Runs the logic (heat-seeking) for an enemy missile
+R $CB2A HL The missile's position
+R $CB2A BC The missile's velocity
+R $CB2A DE The player's position
+N $CB2A Modifies BC to turn towards the player's position
+@ $CB2A label=RunEnemyMissileLogic
 c $CB6F
-@ $CB6F label=routine_CB6F
+@ $CB6F label=RunAllBulletLogic
 c $CB9C
-@ $CB9C label=routine_CB9C
-@ $CBB6 label=routine_CB9C_orientation_SelfMod
+@ $CB9C label=RunBulletLogic
+@ $CBB6 label=RunBulletLogic_SpeedsSelfMod
 c $CC07
 c $CC27
 c $CC4B
@@ -221,11 +237,19 @@ c $CE21
 c $CE73
 c $CE95
 c $CF00
-c $CF2E
+c $CF2E Check an objet's position and dimensions against a bullet table
+R $CF2E HL Object coordinates
+R $CF2E DE Some dimensions
+R $CF2E BC more dimensions
+R $CF2E IY Bullet table (player or enemy)
+N $CF2E Returns with carry cleared if collision happened
+@ $CF2E label=CheckObjectCollisionWithBulletTable
 c $CF56
 c $CF92
 c $CFC0
+@ $CFC0 label=CheckPlayerCollisionWithEnemyBullets
 c $CFD9
+@ $CFD9 label=CheckEnemyMissileCollisionWithPlayerBullets
 c $CFFE
 c $D016
 c $D035

@@ -136,6 +136,9 @@ int main(int argc, char const *argv[]) {
     dumpSprites("sprite_masks.png", 256, 256, bin, 0x0000A560-0x4000, 83, 16, 16, 4, 0, 0);
     dumpSprites("sprites_bits.png", 256, 256, bin, 0x0000A560-0x4000+2, 83, 16, 16, 4, 0, 0);
     dumpMaskSprites("sprites.png", 256, 256, bin, 0x0000A560-0x4000, 83, 16, 16, 4, 0, 0);
+    dumpSprites("sprite8_masks.png", 256, 256, bin, 0x0000CA17-0x4000, 3, 8, 8, 2, 0, 0);
+    dumpSprites("sprite8_bits.png", 256, 256, bin, 0x0000CA17-0x4000+1, 3, 8, 8, 2, 0, 0);
+    dumpMaskSprites("sprites8.png", 256, 256, bin, 0x0000CA17-0x4000, 3, 8, 8, 2, 0, 0);
 
     array<int, 7> leveloffsets{0x61D8, 0x62D7, 0x63D4, 0x64D4, 0x65DB, 0x66EA, 0x67E4};
 
@@ -149,5 +152,5 @@ int main(int argc, char const *argv[]) {
         img.save(filename.str().c_str());
         nlevel++;
     }
-    
+
 }
