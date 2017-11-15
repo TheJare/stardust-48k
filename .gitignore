@@ -9,3 +9,4 @@ skoolkit-6.0/
 *.obj
 *.pdb
 *.ilk
+.vscode/
