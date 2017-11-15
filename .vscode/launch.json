@@ -11,6 +11,6 @@
             "cwd": "${workspaceRoot}",
             "environment": [],
             "externalConsole": true
-        },
+        }
     ]
 }

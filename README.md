@@ -1,15 +1,26 @@
 # Stardust rebuilt
 
-This little project tries to recover a reasonable version of the source code
-for our game Stardust, to celebrate the 30 years since its original release
-back in 1987.
+This little project tries to reverse engineer a reasonable version of the
+source code for our game Stardust, to celebrate the 30 years since its
+original release for 8-bit computers back in 1987.
 
-We have focused on the Sinclair ZX Spectrum version of the game. We ported it
-to the Amstrad CPC, while other people did the MSX, C-64 and eventual PC
-versions. But doing this for the Spectrum is work enough.
+We have focused on the Sinclair ZX Spectrum version of the game, which was
+the main version we created back then. We originally ported it to the
+Amstrad CPC, while other people did the MSX, C-64 and eventual PC versions.
+But doing this project for the Spectrum is work enough. The intro and the
+entire on-foot second stage of the game also fell outside the scope of this
+effort.
 
-The authors wish to dedicate this project to the memory of Javier Cano. Rest
-in peace, our beloved mentor.
+The authors wish to dedicate this project to the memory of our beloved mentor
+and producer Javier Cano, and to Alfonso Azpiri, the unforgettable artist who
+created the cover for Stardust and many other games. Rest in peace.
+
+Also thank to Roberto Carlos Fernandez, who many years ago made me promise
+I'd give him a printed copy of the sources. That copy is buried in some box
+in storage somewhere, and we'd rather do this than go search for it.
+
+The authors of the original game have all given permission to make this
+project public.
 
 ## How was this done?
 
@@ -48,6 +59,11 @@ entry point that sets everything up.
 We work on Windows machines, so we have documented the commands to run the
 above steps inside the file [b.cmd](b.cmd). Adapt the paths in that file to
 your own installation if you want to use run it yourself.
+
+The reverse engineering is by no means complete. We wanted to get to the point
+where the source can be modified and re-assembled, but we're too far from there,
+too many addresses still hardcoded without their proper label. We just didn't
+have enough time to devote to this project, but feel it is still worth releasing.
 
 ## Tools
 
