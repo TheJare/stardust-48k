@@ -22,6 +22,8 @@ in storage somewhere, and we'd rather do this than go search for it.
 The authors of the original game have all given permission to make this
 project public.
 
+Jump straight to the current version of the game's source code [here](s1.asm).
+
 ## How was this done?
 
 We downloaded a few Spectrum emulators since we didn't know which were best
