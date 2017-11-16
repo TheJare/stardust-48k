@@ -41,7 +41,7 @@ struct image {
     int h;
     int chans;
 
-    image(int w_, int h_, int chans_): w(w_), h(h_), chans(chans_), pix(w_*h_*chans_) {}
+    image(int w_, int h_, int chans_, uint8_t v = 0): w(w_), h(h_), chans(chans_), pix(w_*h_*chans_, v) {}
 
     bool save(char const *filename) {
         if (0 != stbi_write_png(filename, w, h, chans, pix.data(), w*chans)) {
@@ -52,14 +52,14 @@ struct image {
     }
 };
 
-void dumpSprite(image &img, bytes const &bin, int srcoff, int srcw, int srch, int srcstride, int destx, int desty, uint32_t setMask = 0xFFFFFFFFU, uint32_t bgMask = 0) {
+void dumpSprite(image &img, bytes const &bin, int srcoff, int srcw, int srch, int srcstride, int destx, int desty, uint32_t setMask = 0xFFFFFFFFU, uint32_t unsetMask = 0, uint32_t bgMask = 0) {
     for (auto i = 0; i < srch; ++i) {
         for (auto j = 0; j < srcw; ++j) {
             auto src = srcoff + i*srcstride + j/8;
             auto srcbit = 0x80 >> (j & 7);
             auto v = bin[src] & srcbit;
             auto *d = &img.pix[(destx + j + (desty + i)*img.w)*img.chans];
-            auto m = v? setMask : 0;
+            auto m = v? setMask : unsetMask;
             d[0] = uint8_t((bgMask >> 24)&d[0] | (m >> 24));
             d[1] = uint8_t(((bgMask >> 16) & 0xFF)&d[1] | ((m >> 16) & 0xFF));
             d[2] = uint8_t(((bgMask >> 8) & 0xFF)&d[2] | ((m >> 8) & 0xFF));
@@ -68,25 +68,25 @@ void dumpSprite(image &img, bytes const &bin, int srcoff, int srcw, int srch, in
     }
 }
 
-void dumpSprites(image &img, bytes const &bin, int srcoff, int n, int srcw, int srch, int srcstride, int destx, int desty, uint32_t setMask = 0xFFFFFFFFU, uint32_t bgMask = 0) {
+void dumpSprites(image &img, bytes const &bin, int srcoff, int n, int srcw, int srch, int srcstride, int destx, int desty, uint32_t setMask = 0xFFFFFFFFU, uint32_t unsetMask = 0, uint32_t bgMask = 0) {
     for (int i = 0; i < n; ++i) {
         int x = destx + (i % (img.w/srcw))*srcw;
         int y = desty + (i / (img.w/srcw))*srch;
 
-        dumpSprite(img, bin, srcoff + (srch*i*srcstride), srcw, srch, srcstride, x, y, setMask, bgMask);
+        dumpSprite(img, bin, srcoff + (srch*i*srcstride), srcw, srch, srcstride, x, y, setMask, unsetMask, bgMask);
     }
 }
 
-void dumpSprites(char const *filename, int w, int h, bytes const &bin, int srcoff, int n, int srcw, int srch, int srcstride, int destx, int desty, uint32_t setMask = 0xFFFFFFFFU, uint32_t bgMask = 0) {
+void dumpSprites(char const *filename, int w, int h, bytes const &bin, int srcoff, int n, int srcw, int srch, int srcstride, int destx, int desty) {
     image img(w, h, 4);
-    dumpSprites(img, bin, srcoff, n, srcw, srch, srcstride, destx, desty, setMask, bgMask);
+    dumpSprites(img, bin, srcoff, n, srcw, srch, srcstride, destx, desty, 0xFFFFFFFFU, 0x000000FFU, 0);
     img.save(filename);
 }
 
-void dumpMaskSprites(char const *filename, int w, int h, bytes const &bin, int srcoff, int n, int srcw, int srch, int srcstride, int destx, int desty, uint32_t setMask = 0xFFFFFFFFU, uint32_t bgMask = 0) {
+void dumpMaskSprites(char const *filename, int w, int h, bytes const &bin, int srcoff, int n, int srcw, int srch, int srcstride, int destx, int desty) {
     image img(w, h, 4);
-    dumpSprites(img, bin, srcoff, n, srcw, srch, srcstride, destx, desty, 0xFF00FFFFU, bgMask);
-    dumpSprites(img, bin, srcoff+srcw/8, n, srcw, srch, srcstride, destx, desty, 0xFFFFFFFFU, 0xFFFFFFFFU);
+    dumpSprites(img, bin, srcoff, n, srcw, srch, srcstride, destx, desty, 0, 0x000000FFU, 0);
+    dumpSprites(img, bin, srcoff+srcw/8, n, srcw, srch, srcstride, destx, desty, 0xFFFFFFFFU, 0, 0xFFFFFFFFU);
     img.save(filename);
 }
 
@@ -95,7 +95,7 @@ void dumpLevel(image &img, bytes const &level, bytes const &bin) {
         int x = (i % 6)*32;
         int y = (i / 6)*32;
 
-        dumpSprite(img, bin, 0x00006DE0-0x4000 + (32*level[i]*4), 32, 32, 4, x, y);
+        dumpSprite(img, bin, 0x00006DE0-0x4000 + (32*level[i]*4), 32, 32, 4, x, y, 0xFFFFFFFFU, 0x000000FFU, 0x000000FFU);
     }
 }
 
