@@ -81,7 +81,7 @@ Credits for the original game:
 - Javier Arevalo: programming, level design and art,
 - Juan Carlos Arevalo: programming, design
 - Julio Martin: HUD, sprites, most art
-- Gonzalo Martin and Cesar Astudillo: Music
+- Gonzalo Martin and Cesar Astudillo "Gominolas": Music
 - Javier Cano: production
 - Jose Manuel Muñoz: original concept
 - Originally published by Topo Soft in 1987
