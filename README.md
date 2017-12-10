@@ -1,5 +1,7 @@
 # Stardust rebuilt
 
+![ZX Spectrum cover](imgs/cover_zx.gif)
+
 This little project tries to reverse engineer a reasonable version of the
 source code for our game Stardust, to celebrate the 30 years since its
 original release for 8-bit computers back in 1987.
@@ -85,6 +87,23 @@ Credits for the original game:
 - Javier Cano: production
 - Jose Manuel Muñoz: original concept
 - Originally published by Topo Soft in 1987
+
+## Extra info
+
+A few images recovered from old photos or friends
+
+### Original design, encoding and notes of maps with pen & paper
+![Tile map notes](imgs/devnotes1.jpg)
+![Tiles](imgs/map_tiles_notes.jpg)
+![Maps 1-3](imgs/maps_dev1.jpg)
+![Maps 4-7](imgs/maps_dev2.jpg)
+
+### First version of the game cover
+![First version of the game cover](imgs/stardust_cover1.jpg)
+
+### Final cover
+![Final cover](imgs/Stardust-cover.png)
+
 
 # License
 
